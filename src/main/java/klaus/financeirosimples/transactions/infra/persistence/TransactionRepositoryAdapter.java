@@ -6,6 +6,7 @@ import klaus.financeirosimples.transactions.domain.vo.Money;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,17 +21,17 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     }
 
     @Override
-    public Optional<Transaction> findByIdAndUserId(UUID transactionId, UUID userId) {
+    public Optional<Transaction> findById(UUID transactionId, UUID userId) {
         return repo.findByIdAndUserId(transactionId, userId);
     }
 
     @Override
-    public List<Transaction> findAllByUserId(UUID userId) {
+    public List<Transaction> findAll(UUID userId) {
         return repo.findAllByUserId(userId);
     }
 
     @Override
-    public void deleteByIdAndUserId(UUID transactionId, UUID userId) {
+    public void delete(UUID transactionId, UUID userId) {
         repo.deleteByIdAndUserId(transactionId, userId);
     }
 
@@ -44,6 +45,11 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     public Money sumOutflow(UUID userId) {
         Long cents = repo.sumOutflowByUserId(userId);
         return Money.fromCents(cents);
+    }
+
+    @Override
+    public List<Transaction> findByDateBetween(LocalDate start, LocalDate end, UUID userId) {
+        return repo.findAllByOccurredAtBetweenAndUserId(start, end, userId);
     }
 
 }
