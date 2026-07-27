@@ -5,5 +5,5 @@ import klaus.financeirosimples.transactions.domain.vo.Money;
 
 import java.time.LocalDate;
 
-public record CreateTransactionRequest(TransactionType type, String category, MoneyDTO amount, String account, LocalDate occurredAt) {
+public record CreateTransactionRequest(TransactionType type, String category, MoneyRequest amount, String account, LocalDate occurredAt) {
 }
