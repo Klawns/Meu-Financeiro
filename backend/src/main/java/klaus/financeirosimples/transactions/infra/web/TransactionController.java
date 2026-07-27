@@ -91,12 +91,12 @@ public class TransactionController {
         return ResponseEntity.ok(mapper.toTransactionResponse(find.findById(transactionId)));
     }
 
-    @DeleteMapping("/transactionId")
+    @DeleteMapping("{transactionId}")
     @Operation(
             summary = "Delete transaction by ID",
             description = "Deletes a transaction by its identifier."
     )
-    public ResponseEntity<Void> deleteTransaction(UUID transactionId) {
+    public ResponseEntity<Void> deleteTransaction(@PathVariable UUID transactionId) {
         delete.execute(transactionId);
         return ResponseEntity.ok().build();
     }
