@@ -1,7 +1,6 @@
 package klaus.financeirosimples.transactions.infra.web.dto.request;
 
 import klaus.financeirosimples.transactions.domain.TransactionType;
-import klaus.financeirosimples.transactions.domain.vo.Money;
 
 import java.time.LocalDate;
 

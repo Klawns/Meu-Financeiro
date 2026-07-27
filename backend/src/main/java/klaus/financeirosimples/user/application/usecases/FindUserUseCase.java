@@ -1,6 +1,5 @@
 package klaus.financeirosimples.user.application.usecases;
 
-import klaus.financeirosimples.auth.infra.web.dto.response.UserResponse;
 import klaus.financeirosimples.user.application.exceptions.UserNotFoundException;
 import klaus.financeirosimples.user.application.output.UserOutput;
 import klaus.financeirosimples.user.application.ports.UserRepository;
