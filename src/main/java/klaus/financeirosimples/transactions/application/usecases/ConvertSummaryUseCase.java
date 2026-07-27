@@ -16,32 +16,35 @@ public class ConvertSummaryUseCase {
 
 
     public FinancialSummary execute(String currencyCode) {
+        Currency targetCurrency = getTargetCurrency(currencyCode);
 
-        Currency targetCurrency;
+        FinancialSummary summary = getSummary.execute();
+
+        Money inflow = convertIfNecessary(summary.inflow(), targetCurrency);
+        Money outflow = convertIfNecessary(summary.outflow(), targetCurrency);
+
+        return new FinancialSummary(
+                inflow,
+                outflow,
+                inflow.subtract(outflow)
+        );
+    }
+
+    private Currency getTargetCurrency(String currencyCode) {
         try {
-            targetCurrency = Currency.getInstance(currencyCode.toUpperCase());
+            return Currency.getInstance(currencyCode.toUpperCase());
         } catch (IllegalArgumentException ex) {
             throw new UnsupportedOperationException(
                     "Unsupported currency: " + currencyCode
             );
         }
+    }
 
-        FinancialSummary summary = getSummary.execute();
-
-        Money inflow = summary.inflow();
-        Money outflow = summary.outflow();
-
-        if (!inflow.currency().equals(targetCurrency)) {
-            inflow = converter.convert(inflow, targetCurrency);
-            outflow = converter.convert(outflow, targetCurrency);
+    private Money convertIfNecessary(Money money, Currency targetCurrency) {
+        if (money.currency().equals(targetCurrency)) {
+            return money;
         }
 
-        Money balance = inflow.subtract(outflow);
-
-        return new FinancialSummary(
-                inflow,
-                outflow,
-                balance
-        );
+        return converter.convert(money, targetCurrency);
     }
 }
