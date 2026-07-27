@@ -1,7 +1,6 @@
 package klaus.financeirosimples.transactions.infra.persistence;
 
 import klaus.financeirosimples.transactions.domain.Transaction;
-import klaus.financeirosimples.transactions.domain.vo.Money;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import java.math.BigDecimal;
 import java.util.Currency;
 
 @Component
