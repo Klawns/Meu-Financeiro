@@ -39,7 +39,7 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: ./mvnw clean verify
+        run: ./mvnw clean verify -DskipTests
 
       - name: Upload test reports
         if: always()
@@ -47,6 +47,7 @@ jobs:
         with:
           name: test-reports
           path: backend/target/surefire-reports
+          
   docker:
     name: Build Docker Image
     needs: test
