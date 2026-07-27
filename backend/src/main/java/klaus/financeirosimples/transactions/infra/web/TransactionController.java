@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
-
 @RestController
 @RequestMapping("/transactions")
 @RequiredArgsConstructor
@@ -33,8 +31,6 @@ public class TransactionController {
     private final ConvertSummaryUseCase convert;
     private final GetFinancialSummaryUseCase getFinancialSummary;
     private final TransactionHttpMapper mapper;
-
-
 
     @PostMapping
     @Operation(
@@ -70,7 +66,7 @@ public class TransactionController {
     @GetMapping
     @Operation(
             summary = "List transactions",
-            description = "Returns all transactions or filters them by period."
+            description = "Returns all transactions or filters them by period: today and yesterday."
     )
     public ResponseEntity<List<TransactionResponse>> list(@RequestParam(required = false) TransactionPeriod period) {
         List<TransactionOutput> transactions = period == null ? find.findAll() : find.findAllByDateBetween(period);
