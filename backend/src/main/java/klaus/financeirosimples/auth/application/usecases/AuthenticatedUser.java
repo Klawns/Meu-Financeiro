@@ -15,11 +15,11 @@ public class AuthenticatedUser {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !(authentication.getPrincipal() instanceof Jwt jwt)) {
-            throw new IllegalStateException("Usuário não autenticado");
+            throw new IllegalStateException("Unauthenticated user");
         }
 
         return UUID.fromString(
-                Objects.requireNonNull(jwt.getSubject(), "JWT sem subject")
+                Objects.requireNonNull(jwt.getSubject(), "JWT without subject")
         );
     }
 }
