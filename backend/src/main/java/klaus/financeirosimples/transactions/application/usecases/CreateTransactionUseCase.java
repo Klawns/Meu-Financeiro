@@ -9,11 +9,13 @@ import klaus.financeirosimples.user.application.exceptions.UserNotFoundException
 import klaus.financeirosimples.user.application.ports.UserRepository;
 import klaus.financeirosimples.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class CreateTransactionUseCase {
@@ -23,7 +25,10 @@ public class CreateTransactionUseCase {
 
     public UUID execute(CreateTransactionCommand command){
         User user = userRepo.findById(currentUser.id())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> {
+                    log.warn("User not found with id={}", currentUser.id());
+                    return new UserNotFoundException("User not found");
+                });
 
         Transaction transaction = new klaus.financeirosimples.transactions.domain.Transaction(
                 user,
@@ -35,7 +40,7 @@ public class CreateTransactionUseCase {
         );
 
         repo.save(transaction);
-
-        return  transaction.getId();
+        log.info("Transaction created: {}", transaction);
+        return transaction.getId();
     }
 }
