@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface JPATransactionRepository extends JpaRepository<Transaction, UUID> {
     Optional<Transaction> findByIdAndUserId(UUID transactionId, UUID userId);
-    List<Transaction> findAllByUserId(UUID userId);
+    List<Transaction> findAllByUserIdOrderByOccurredAtDescCreatedAtDesc(UUID userId);
     void deleteByIdAndUserId(UUID transactionId, UUID userId);
-    List<Transaction> findAllByOccurredAtBetweenAndUserId(LocalDate start, LocalDate end, UUID userId);
+    List<Transaction> findAllByOccurredAtBetweenAndUserIdOrderByOccurredAtDescCreatedAtDesc(LocalDate start, LocalDate end, UUID userId);
 
     @Query("""
         SELECT COALESCE(SUM(t.amount.amount), 0)

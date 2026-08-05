@@ -27,7 +27,7 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
 
     @Override
     public List<Transaction> findAll(UUID userId) {
-        return repo.findAllByUserId(userId);
+        return repo.findAllByUserIdOrderByOccurredAtDescCreatedAtDesc(userId);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
 
     @Override
     public List<Transaction> findByDateBetween(LocalDate start, LocalDate end, UUID userId) {
-        return repo.findAllByOccurredAtBetweenAndUserId(start, end, userId);
+        return repo.findAllByOccurredAtBetweenAndUserIdOrderByOccurredAtDescCreatedAtDesc(start, end, userId);
     }
 
 }
