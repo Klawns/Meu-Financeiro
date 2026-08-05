@@ -1,7 +1,7 @@
 package klaus.financeirosimples.transactions.domain.vo;
 
 import jakarta.persistence.*;
-import klaus.financeirosimples.common.expections.DomainException;
+import klaus.financeirosimples.common.exceptions.DomainException;
 
 import java.util.Currency;
 
