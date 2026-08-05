@@ -42,8 +42,8 @@ public class JwtService implements JwtProvider {
                    .signWith(getSigningKey())
                    .compact();
         } catch (Exception e) {
-            log.debug("Error generating JWT", e);
-            throw new JwtGenerationException("Error generating JWT: ", e);
+            log.error("Error generating JWT", e);
+            throw new JwtGenerationException("Error generating JWT.", e);
         }
     }
 }
