@@ -23,6 +23,24 @@ public class FindTransactionUseCase {
         Transaction transaction = repo.findById(transactionId, user.id())
                 .orElseThrow(() -> new TransactionNotFoundException("Transaction not found."));
 
+        return toOutput(transaction);
+    }
+
+    public List<TransactionOutput> findAll() {
+        List<Transaction> transactions = repo.findAll(user.id());
+        return transactions.stream()
+                .map(this::toOutput)
+                .toList();
+    }
+
+    public List<TransactionOutput> findAllByDateBetween(TransactionPeriod period) {
+        DateRange range = period.resolve();
+        return repo.findByDateBetween(range.start(), range.end(), user.id()).stream()
+                .map(this::toOutput)
+                .toList();
+    }
+
+    private TransactionOutput toOutput(Transaction transaction) {
         return new TransactionOutput(
                 transaction.getId(),
                 transaction.getType(),
@@ -31,33 +49,5 @@ public class FindTransactionUseCase {
                 transaction.getAccount(),
                 transaction.getOccurredAt()
         );
-    }
-
-    public List<TransactionOutput> findAll() {
-        List<Transaction> transactions = repo.findAll(user.id());
-        return transactions.stream()
-                .map(transaction -> new TransactionOutput(
-                        transaction.getId(),
-                        transaction.getType(),
-                        transaction.getCategory(),
-                        transaction.getAmount(),
-                        transaction.getAccount(),
-                        transaction.getOccurredAt()
-                ))
-                .toList();
-    }
-
-    public List<TransactionOutput> findAllByDateBetween(TransactionPeriod period) {
-        DateRange range = period.resolve();
-        return repo.findByDateBetween(range.start(), range.end(), user.id()).stream()
-                .map(transaction -> new TransactionOutput(
-                        transaction.getId(),
-                        transaction.getType(),
-                        transaction.getCategory(),
-                        transaction.getAmount(),
-                        transaction.getAccount(),
-                        transaction.getOccurredAt()
-                ))
-                .toList();
     }
 }
