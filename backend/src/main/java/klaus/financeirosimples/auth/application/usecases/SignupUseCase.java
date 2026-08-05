@@ -6,9 +6,11 @@ import klaus.financeirosimples.user.application.exceptions.UserAlreadyExists;
 import klaus.financeirosimples.user.application.ports.UserRepository;
 import klaus.financeirosimples.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class SignupUseCase {
 
     public void execute(SignupCommand command) {
         if (repo.existsByEmail(command.email())){
+            log.warn("Signup failed: email already exists. email={}", command.email());
             throw new UserAlreadyExists("User already exists.");
         }
 
@@ -26,5 +29,6 @@ public class SignupUseCase {
         User user = User.createUser(command.username(), command.email(), passwordHash);
 
         repo.save(user);
+        log.info("User created successfully. id={}, email={}", user.getId(), user.getEmail());
     }
 }
