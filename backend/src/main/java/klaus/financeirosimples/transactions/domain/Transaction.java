@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Slf4j
 @Entity
-@Table(name = "transactions")
+@Table(name = "transactions", indexes = {@Index(name = "idx_transactions_user_id", columnList = "user_id")})
 @NoArgsConstructor
 @Getter
 public class Transaction {
