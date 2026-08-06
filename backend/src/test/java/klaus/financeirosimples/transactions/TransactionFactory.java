@@ -1,5 +1,6 @@
 package klaus.financeirosimples.transactions;
 
+import klaus.financeirosimples.transactions.application.commands.CreateTransactionCommand;
 import klaus.financeirosimples.transactions.domain.Transaction;
 import klaus.financeirosimples.transactions.domain.TransactionType;
 import klaus.financeirosimples.transactions.domain.vo.Money;
@@ -12,6 +13,16 @@ public class TransactionFactory {
     public static Transaction createTransaction() {
         return new Transaction(
                 createUser(),
+                TransactionType.INFLOW,
+                "Salary",
+                Money.fromCents(10000),
+                "Nubank",
+                LocalDate.now()
+        );
+    }
+
+    public static CreateTransactionCommand createTransactionCommand() {
+        return new CreateTransactionCommand(
                 TransactionType.INFLOW,
                 "Salary",
                 Money.fromCents(10000),
