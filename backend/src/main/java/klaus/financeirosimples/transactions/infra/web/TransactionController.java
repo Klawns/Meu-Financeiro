@@ -35,18 +35,18 @@ public class TransactionController {
     @PostMapping
     @Operation(
             summary = "Create transaction",
-            description = "Creates a new financial transaction."
+            description = "Creates a new financial transaction. Amounts are stored in GBP."
     )
     public ResponseEntity<CreateTransactionResponse> create(@RequestBody CreateTransactionRequest request) {
         CreateTransactionCommand command = mapper.toCreateTransactionCommand(request);
         UUID transactionId = create.execute(command);
-        return ResponseEntity.ok(new CreateTransactionResponse(transactionId)   );
+        return ResponseEntity.ok(new CreateTransactionResponse(transactionId));
     }
 
     @GetMapping("/summary")
     @Operation(
             summary = "Get financial summary",
-            description = "Returns the current financial summary, including inflow, outflow and balance."
+            description = "Returns the current financial summary in GBP, including inflow, outflow and balance."
     )
     public ResponseEntity<FinancialSummaryResponse> getFinancialSummary() {
         FinancialSummary summary = getFinancialSummary.execute();
@@ -54,8 +54,8 @@ public class TransactionController {
     }
 
     @Operation(
-            summary = "Convert financial summary",
-            description = "Converts the financial summary values to the requested currency."
+            summary = "Convert financial summary from GBP",
+            description = "Converts the financial summary values from GBP to the requested currency."
     )
     @PostMapping("/summary/convert")
     ResponseEntity<FinancialSummaryResponse> convert(@RequestBody ConvertSummaryRequest request) {
@@ -66,7 +66,7 @@ public class TransactionController {
     @GetMapping
     @Operation(
             summary = "List transactions",
-            description = "Returns all transactions or filters them by period: today and yesterday."
+            description = "Returns all transactions, optionally filtered by period: today or yesterday."
     )
     public ResponseEntity<List<TransactionResponse>> list(@RequestParam(required = false) TransactionPeriod period) {
         List<TransactionOutput> transactions = period == null ? find.findAll() : find.findAllByDateBetween(period);

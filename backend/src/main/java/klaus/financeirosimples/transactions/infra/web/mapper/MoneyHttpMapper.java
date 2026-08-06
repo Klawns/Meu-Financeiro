@@ -9,12 +9,11 @@ import org.mapstruct.Mapper;
 public interface MoneyHttpMapper {
     default Money toMoney(MoneyRequest moneyRequest) {
         return Money.fromCents(moneyRequest.cents());
-   }
+    }
 
-   default MoneyResponse toMoneyResponse(Money money) {
+    default MoneyResponse toMoneyResponse(Money money) {
         return new MoneyResponse(
-                money.amount(),
-                money.currencyCode()
+                money.amount()
         );
-   }
+    }
 }

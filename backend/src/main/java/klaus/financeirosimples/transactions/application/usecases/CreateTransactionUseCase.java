@@ -30,7 +30,7 @@ public class CreateTransactionUseCase {
                     return new UserNotFoundException("User not found");
                 });
 
-        Transaction transaction = new klaus.financeirosimples.transactions.domain.Transaction(
+        Transaction transaction = new Transaction(
                 user,
                 command.type(),
                 command.category(),
