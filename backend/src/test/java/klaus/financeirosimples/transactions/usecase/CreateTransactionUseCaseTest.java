@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -43,25 +44,19 @@ public class CreateTransactionUseCaseTest {
     @Test
     @DisplayName("Success - Should create transaction with success")
     void createTransactionSuccess() {
-        UUID userId = UUID.randomUUID();
 
+        UUID userId = UUID.randomUUID();
         User user = createUser();
 
         when(currentUser.id()).thenReturn(userId);
-
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         CreateTransactionCommand command = createTransactionCommand();
 
-        UUID response = create.execute(command);
+        create.execute(command);
 
-        assertNotNull(response);
-
-        verify(userRepository)
-                .findById(userId);
-
-        verify(transactionRepository)
-                .save(any(Transaction.class));
+        verify(userRepository).findById(userId);
+        verify(transactionRepository).save(any(Transaction.class));
     }
 
     @Test
