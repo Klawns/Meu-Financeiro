@@ -3,6 +3,7 @@ package klaus.financeirosimples.user.domain;
 import klaus.financeirosimples.common.exceptions.DomainException;
 import org.junit.jupiter.api.Test;
 
+import static klaus.financeirosimples.user.UserFactory.createUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -10,16 +11,16 @@ public class UserTest {
 
     @Test
     void shouldCreateUser() {
-        User testUser = new User("test", "test@gmail.com", "123456");
-        assertEquals("test", testUser.getUsername());
-        assertEquals("test@gmail.com", testUser.getEmail());
+        User testUser = createUser();
+        assertEquals("teste", testUser.getUsername());
+        assertEquals("teste@gmail.com", testUser.getEmail());
         assertEquals("123456", testUser.getPassword());
     }
 
     @Test
     void shouldThrowWhenUsernameIsTooShort() {
         DomainException exception = assertThrows(DomainException.class, () -> {
-            User testUser = new User("ab", "test@gmail.com", "test");
+            User testUser = new User("ab", "teste@gmail.com", "test");
         });
         assertEquals("Username too short", exception.getMessage());
     }
