@@ -39,21 +39,28 @@ public class User {
     private LocalDate updatedAt;
 
     public User(String username, String email, String password) {
-        validate(username, email, password);
         this.username = Objects.requireNonNull(username);
         this.email = Objects.requireNonNull(email);
         this.password = Objects.requireNonNull(password);
+        validate(this.username, this.email, this.password);
     }
+
     public static User createUser(String username, String email, String password) {
         return new User(username, email, password);
     }
+
     public void changeUsername(String username) {
+        Objects.requireNonNull(username);
+        validateUsername(username);
         this.username = username;
     }
     public void changeEmail(String email) {
+        Objects.requireNonNull(email);
         this.email = email;
     }
     public void changePassword(String password) {
+        Objects.requireNonNull(password);
+        validatePassword(password);
         this.password = password;
     }
     private void validate(String username, String email, String password) {
