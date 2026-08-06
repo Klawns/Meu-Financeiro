@@ -1,14 +1,18 @@
 package klaus.financeirosimples.user.domain;
 
 import jakarta.persistence.*;
+import klaus.financeirosimples.common.exceptions.DomainException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -35,9 +39,10 @@ public class User {
     private LocalDate updatedAt;
 
     public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+        validate(username, email, password);
+        this.username = Objects.requireNonNull(username);
+        this.email = Objects.requireNonNull(email);
+        this.password = Objects.requireNonNull(password);
     }
     public static User createUser(String username, String email, String password) {
         return new User(username, email, password);
@@ -50,5 +55,31 @@ public class User {
     }
     public void changePassword(String password) {
         this.password = password;
+    }
+    private void validate(String username, String email, String password) {
+        validateEmpty(username, email, password);
+        validateUsername(username);
+        validatePassword(password);
+    }
+
+    private static void validatePassword(String password) {
+        if (password.length() < 6) {
+            log.warn("Password too short");
+            throw new DomainException("Password too short");
+        }
+    }
+
+    private static void validateUsername(String username) {
+        if (username.length() < 3) {
+            log.warn("Username too short");
+            throw new DomainException("Username too short");
+        }
+    }
+
+    private static void validateEmpty(String username, String email, String password) {
+        if(username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            log.warn("Username, email or password are empty");
+            throw new DomainException("Username, email and password both required");
+        }
     }
 }
